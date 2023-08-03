@@ -8,7 +8,7 @@ import VistaPrincipal from '../screens/vistaPrincipal';
 
 const Stack = createStackNavigator();
 
-const forFade = ({ current }:any) => ({
+const forFade = ({current }) => ({
     cardStyle: {
       opacity: current.progress,
     },
@@ -19,8 +19,9 @@ function MyStack(){
 
  
   return (
-    <NavigationContainer>
+    <NavigationContainer >
         <Stack.Navigator
+
           screenOptions={{
             gestureEnabled:true,
             gestureDirection:"horizontal",
@@ -30,7 +31,7 @@ function MyStack(){
             },
             headerTintColor: '#327cbc',
             headerStyle:{
-              backgroundColor:'trasparent',
+              backgroundColor:'white',
               height:60
             },
             headerBackTitleVisible: false
