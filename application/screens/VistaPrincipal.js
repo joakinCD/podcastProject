@@ -26,10 +26,11 @@ const VistaPrincipal = (props) => {
     console.log("podcastsel",podcast)
     podcast.cargarDatosPodcast().then(function(res){
       console.log("res",res)
+      props.navigation.navigate('vistaDetallesPodcast',{podcast:podcast})
     },function(err){
       console.log("err",err)
     })
-    props.navigation.navigate('vistaDetallesPodcast',{podcast:podcast})
+    
   }
   return (
     <View style={{flex:1,padding:20,background:'white'}}>

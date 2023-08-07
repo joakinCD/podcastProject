@@ -1,6 +1,6 @@
 
 import llamadasPodcast from '../funcionalidades/llamadasPodcast'
-import { xml2js } from 'xml-js';
+import Episodio from './Episodio'
 export default class Podcast{
   id=0
   titulo=""
@@ -8,6 +8,7 @@ export default class Podcast{
   autor=''
   descripcion=''
   episodios=[]
+  totalEpisodios=0
   constructor(obj) {
     this.id=obj.id || ''
     this.titulo=obj.titulo || ''
@@ -15,6 +16,7 @@ export default class Podcast{
     this.autor=obj.autor || ''
     this.descripcion=obj.descripcion || ''
     this.episodios=obj.episodios || []
+    this.totalEpisodios=obj.totalEpisodios || 0
   }
   cargarDatosPodcast(){
     let thisPodcast = this
@@ -23,29 +25,21 @@ export default class Podcast{
           console.log("result",result)
           let contents= await JSON.parse(result.contents)
           console.log("contents",contents)
-          let url = contents.results[0].feedUrl
-           fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`, {
-              method: 'GET',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              }
-              
+          let informacion=contents.results.shift()
+          thisPodcast.totalEpisodios=informacion.trackCount || 0
+          let listadoEpisodios =[]
+          contents.results.map(function(item,index){
+            let episodio=new Episodio({
+              id:item.trackId,
+              titulo:item.trackName,
+              descripcion:item.description,
+              fecha:item.releaseDate,
+              duracion:item.trackTimeMillis
             })
-              .then(async response => {
-                  let respuesta = await response.json()
-                  console.log("respuesta",respuesta)
-                  console.log("respuesta.contents",respuesta.contents)
-                  const json = xml2js(respuesta.contents, { spaces: 50 });
-
-                  console.log('json',json);
-
-              })
-              .catch((error) => {
-                  console.error('Error getDatosPodcast -> ',error);
-                  reject(error);
-              })
-          resolve(contents);
+            listadoEpisodios.push(episodio)
+          })
+          thisPodcast.episodios=listadoEpisodios
+          resolve(thisPodcast);
        },function(err){
           console.log('Error cargarDatosPodcast -> '+err);
           reject(err);

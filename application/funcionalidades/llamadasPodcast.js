@@ -26,14 +26,14 @@ async function getListadoPodcast(){
 }
 async function getDatosPodcast(id){
   return new Promise(function(resolve, reject) {
-    var url = 'https://itunes.apple.com/lookup?id='+id
+    let url = 'https://itunes.apple.com/lookup?id='+id+'&media=podcast&entity=podcastEpisode&limit=100'
+
     fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-      
     })
       .then(response => {
           if (response.status == 200) {
