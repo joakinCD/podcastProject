@@ -24,7 +24,8 @@ const SplashScreen = (props) => {
               id:item.id.attributes['im:id'],
               titulo:item['im:name'].label,
               autor:item['im:artist'].label,
-              imagen:item['im:image'][2].label
+              imagen:item['im:image'][2].label,
+              descripcion:item.summary.label
             })
             listadoPodcast.push(podcast)
           })

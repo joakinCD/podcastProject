@@ -22,6 +22,15 @@ const VistaPrincipal = (props) => {
         setTextoBuscador('');
       }
     }
+  function abrirDetallesPodcast(podcast){
+    console.log("podcastsel",podcast)
+    podcast.cargarDatosPodcast().then(function(res){
+      console.log("res",res)
+    },function(err){
+      console.log("err",err)
+    })
+    props.navigation.navigate('vistaDetallesPodcast',{podcast:podcast})
+  }
   return (
     <View style={{flex:1,padding:20,background:'white'}}>
 
@@ -45,7 +54,8 @@ const VistaPrincipal = (props) => {
           return(
             <PodcastItem 
               key={index}
-             podcast={item}
+              podcast={item}
+              abrirDetallesPodcast={abrirDetallesPodcast}
             >
             </PodcastItem>
           )
