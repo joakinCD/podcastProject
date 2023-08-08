@@ -3,6 +3,7 @@ import { View,FlatList,TextInput,Text } from 'react-native';
 import { connect } from "react-redux";
 import PodcastItem from '../components/PodcastItem';
 import { setLoading} from "../reducers";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const VistaPrincipal = (props) => {
   const [podcastBuscador, setPodcastBuscador] = useState(props.listadoPodcast.slice());
   const [textoBuscador, setTextoBuscador] = useState('');
@@ -23,16 +24,37 @@ const VistaPrincipal = (props) => {
         setTextoBuscador('');
       }
     }
-  function abrirDetallesPodcast(podcast){
+  async function abrirDetallesPodcast(podcast){
     console.log("podcastselasdf",podcast)
-    props.setLoading(true)
-    podcast.cargarDatosPodcast().then(function(res){
-      props.setLoading(false)
-      console.log("res",res)
+    let podcastLocal = await AsyncStorage.getItem('@'+podcast.id)
+    podcastLocal = await JSON.parse(podcastLocal)
+    let necesarioCargar=true
+    if(podcastLocal){
+      if(parseFloat(podcastLocal.timestamp)>(new Date().getTime()-86400000)){
+        necesarioCargar=false
+      }
+    }
+    if(necesarioCargar){
+      props.setLoading(true)
+      podcast.cargarDatosPodcast().then(function(res){
+        props.setLoading(false)
+        console.log("res",res)
+
+        AsyncStorage.setItem('@'+podcast.id,JSON.stringify({
+            podcast:podcast,
+            timestamp:(new Date().getTime()).toString()
+          })
+        );
+
+        props.navigation.navigate('vistaDetallesPodcast',{podcast:podcast})
+      },function(err){
+        console.log("err",err)
+      })
+    }else{
+      podcast = new Podcast(podcastLocal.podcast)
       props.navigation.navigate('vistaDetallesPodcast',{podcast:podcast})
-    },function(err){
-      console.log("err",err)
-    })
+    }
+    
     
   }
   return (

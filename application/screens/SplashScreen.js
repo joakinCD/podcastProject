@@ -8,34 +8,59 @@ import { connect } from "react-redux";
 import { setListadoPodcast,setNavigationRedux} from "../reducers";
 import llamadasPodcast from '../funcionalidades/llamadasPodcast'
 import Podcast from '../objetos/Podcast'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = (props) => {
   const [podcastCargados, setPodcastCargados] = useState(false);
-  function cargarPodcast(){
+  async function cargarPodcast(){
     
-     llamadasPodcast.getListadoPodcast().then(async function(result){
-
-        let contents= await JSON.parse(result.contents)
-        console.log("contents",contents)
-        
-        let listadoPodcast = []
-        if(contents?.feed?.entry?.length>0){
-          contents.feed.entry.map(function(item,index){
-            let podcast=new Podcast({
-              id:item.id.attributes['im:id'],
-              titulo:item['im:name'].label,
-              autor:item['im:artist'].label,
-              imagen:item['im:image'][2].label,
-              descripcion:item.summary.label
+    let listadoLocal = await AsyncStorage.getItem('@listadoPodcast')
+    listadoLocal = await JSON.parse(listadoLocal)
+    let necesarioCargar=true
+    if(listadoLocal){
+      if(parseFloat(listadoLocal.timestamp)>(new Date().getTime()-86400000)){
+        necesarioCargar=false
+      }
+    }
+    if(necesarioCargar){
+      llamadasPodcast.getListadoPodcast().then(async function(result){
+          let contents= await JSON.parse(result.contents)
+          console.log("contents",contents)
+          
+          let listadoPodcast = []
+          if(contents?.feed?.entry?.length>0){
+            contents.feed.entry.map(function(item,index){
+              let podcast=new Podcast({
+                id:item.id.attributes['im:id'],
+                titulo:item['im:name'].label,
+                autor:item['im:artist'].label,
+                imagen:item['im:image'][2].label,
+                descripcion:item.summary.label
+              })
+              listadoPodcast.push(podcast)
             })
-            listadoPodcast.push(podcast)
-          })
-        }
-        props.setListadoPodcast(listadoPodcast)
-        setPodcastCargados(true)
-     },function(err){
-        console.log('Error getListadoPodcast -> ',err);
-     })
+          }
+          AsyncStorage.setItem('@listadoPodcast',JSON.stringify({
+            listado:listadoPodcast,
+            timestamp:(new Date().getTime()).toString()
+            })
+          );
+          props.setListadoPodcast(listadoPodcast)
+          setPodcastCargados(true)
+      },function(err){
+          console.log('Error getListadoPodcast -> ',err);
+      })
+    }else{
+      let listadoPodcast = []
+         
+      listadoLocal.listado.map(function(item,index){
+        let podcast=new Podcast(item)
+        listadoPodcast.push(podcast)
+      })
+
+      props.setListadoPodcast(listadoPodcast)
+      setPodcastCargados(true)
+    }
    
   }
   useEffect(() => {
