@@ -5,13 +5,14 @@ import {styles} from '../../assets/styles/styles';
 import {StatusBar} from 'expo-status-bar';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { connect } from "react-redux";
-import { setListadoPodcast} from "../reducers";
+import { setListadoPodcast,setNavigationRedux} from "../reducers";
 import llamadasPodcast from '../funcionalidades/llamadasPodcast'
 import Podcast from '../objetos/Podcast'
 
 const SplashScreen = (props) => {
   const [podcastCargados, setPodcastCargados] = useState(false);
   function cargarPodcast(){
+    
      llamadasPodcast.getListadoPodcast().then(async function(result){
 
         let contents= await JSON.parse(result.contents)
@@ -46,6 +47,7 @@ const SplashScreen = (props) => {
    }
   }, [podcastCargados]);
   function cargarSiguienteScreen(){
+    props.setNavigationRedux(props.navigation)
         props.navigation.reset({
           index:0,
           routes:[{name:'vistaPrincipal'}]
@@ -69,7 +71,8 @@ const SplashScreen = (props) => {
   );
 };
 const mapDispatchToProps = {
-  setListadoPodcast
+  setListadoPodcast,
+  setNavigationRedux
 }
 const mapStateToProps = (state) => {
   return {

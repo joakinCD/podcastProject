@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View,FlatList,TextInput,Text } from 'react-native';
 import { connect } from "react-redux";
 import PodcastItem from '../components/PodcastItem';
+import { setLoading} from "../reducers";
 const VistaPrincipal = (props) => {
   const [podcastBuscador, setPodcastBuscador] = useState(props.listadoPodcast.slice());
   const [textoBuscador, setTextoBuscador] = useState('');
@@ -23,8 +24,10 @@ const VistaPrincipal = (props) => {
       }
     }
   function abrirDetallesPodcast(podcast){
-    console.log("podcastsel",podcast)
+    console.log("podcastselasdf",podcast)
+    props.setLoading(true)
     podcast.cargarDatosPodcast().then(function(res){
+      props.setLoading(false)
       console.log("res",res)
       props.navigation.navigate('vistaDetallesPodcast',{podcast:podcast})
     },function(err){
@@ -65,9 +68,12 @@ const VistaPrincipal = (props) => {
     </View>
   );
 };
+const mapDispatchToProps = {
+  setLoading
+}
 const mapStateToProps = (state) => {
   return {
     listadoPodcast: state.podcast.listadoPodcast,
   };
 };
-export default connect(mapStateToProps)(VistaPrincipal);
+export default connect(mapStateToProps,mapDispatchToProps)(VistaPrincipal);
