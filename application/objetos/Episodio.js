@@ -4,12 +4,14 @@ export default class Episodio{
   descripcion=''
   fecha=''
   duracion=0
+  urlAudio=''
   constructor(obj) {
     this.id=obj.id || ''
     this.titulo=obj.titulo || ''
     this.descripcion=obj.descripcion || ''
     this.fecha=this.obtenerFecha(obj.fecha)
     this.duracion=this.obtenerDuracion(obj.duracion || 0)
+    this.urlAudio=obj.urlAudio || ''
   }
   obtenerDuracion(milisegundos){
     let segundos=milisegundos/1000
