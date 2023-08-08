@@ -5,6 +5,9 @@ import PodcastDetails from '../components/PodcastDetails';
 const VistaDetallesPodcast = (props) => {
   let podcast=props.route.params.podcast
   
+  function abrirDetallesEpisodio(episodio){
+   props.navigation.navigate('vistaDetallesEpisodio',{podcast:podcast,episodio:episodio})
+  }
   return (
     <View style={{flex:1,padding:20,background:'white'}}>
       <View style={{flex:1,flexDirection:'row'}}>
@@ -35,7 +38,7 @@ const VistaDetallesPodcast = (props) => {
                       par = true
                     }
                     return(
-                      <Pressable style={[{width:'100%',borderBottomWidth:1,borderColor:'grey',padding:10,flexDirection:'row',alignItems:'center',justifyContent:'center'},par?{backgroundColor:'white'}:{backgroundColor:'grey'}]}>
+                      <Pressable onPress={abrirDetallesEpisodio.bind(this,item)} style={[{width:'100%',borderBottomWidth:1,borderColor:'grey',padding:10,flexDirection:'row',alignItems:'center',justifyContent:'center'},par?{backgroundColor:'white'}:{backgroundColor:'#DEDEDE'}]}>
                         <Text style={{fontSize: 16,color:'blue',flex:1}}>{item.titulo}</Text>
                         <Text style={{fontSize: 16,width:100}}>{item.fecha}</Text>
                         <Text style={{fontSize: 16,width:80}}>{item.duracion}</Text>

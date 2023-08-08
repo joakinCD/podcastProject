@@ -34,7 +34,8 @@ export default class Podcast{
               titulo:item.trackName,
               descripcion:item.description,
               fecha:item.releaseDate,
-              duracion:item.trackTimeMillis
+              duracion:item.trackTimeMillis,
+              urlAudio:item.episodeUrl
             })
             listadoEpisodios.push(episodio)
           })

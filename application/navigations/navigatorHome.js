@@ -6,7 +6,7 @@ import { TransitionPresets } from '@react-navigation/stack';
 import SplashScreen from '../screens/SplashScreen';
 import VistaPrincipal from '../screens/vistaPrincipal';
 import VistaDetallesPodcast from '../screens/VistaDetallesPodcast';
-
+import VistaDetallesEpisodio from '../screens/VistaDetallesEpisodio';
 const Stack = createStackNavigator();
 
 const forFade = ({current }) => ({
@@ -41,6 +41,7 @@ function MyStack(){
           <Stack.Screen name="splashScreen" component={SplashScreen} options={{headerShown: false,gestureEnabled: false, cardStyleInterpolator: forFade}}  />
           <Stack.Screen name="vistaPrincipal" component={VistaPrincipal} options={{title:'Poscaster',gestureEnabled: false}}  />
           <Stack.Screen name="vistaDetallesPodcast" component={VistaDetallesPodcast} options={{title:'Poscaster',gestureEnabled: false}}  />
+          <Stack.Screen name="vistaDetallesEpisodio" component={VistaDetallesEpisodio} options={{title:'Poscaster',gestureEnabled: false}}  />
         </Stack.Navigator>
       </NavigationContainer>
   );
