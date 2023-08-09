@@ -1,23 +1,78 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import {View, Image} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {styles} from '../../assets/styles/styles';
 import {StatusBar} from 'expo-status-bar';
 import { FontAwesome5 } from '@expo/vector-icons'; 
-
+import { connect } from "react-redux";
+import { setListadoPodcast,setNavigationRedux} from "../reducers";
+import llamadasPodcast from '../funcionalidades/llamadasPodcast'
+import Podcast from '../objetos/Podcast'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = (props) => {
-  let [animating, setAnimating] = useState(true);
+  const [podcastCargados, setPodcastCargados] = useState(false);
+  async function cargarPodcast(){
+    
+    let listadoLocal = await AsyncStorage.getItem('@listadoPodcast')
+    listadoLocal = await JSON.parse(listadoLocal)
+    let necesarioCargar=true
+    if(listadoLocal){
+      if(parseFloat(listadoLocal.timestamp)>(new Date().getTime()-86400000)){
+        necesarioCargar=false
+      }
+    }
+    if(necesarioCargar){
+      llamadasPodcast.getListadoPodcast().then(async function(result){
+          let contents= await JSON.parse(result.contents)
+          console.log("contents",contents)
+          
+          let listadoPodcast = []
+          if(contents?.feed?.entry?.length>0){
+            contents.feed.entry.map(function(item,index){
+              let podcast=new Podcast({
+                id:item.id.attributes['im:id'],
+                titulo:item['im:name'].label,
+                autor:item['im:artist'].label,
+                imagen:item['im:image'][2].label,
+                descripcion:item.summary.label
+              })
+              listadoPodcast.push(podcast)
+            })
+          }
+          AsyncStorage.setItem('@listadoPodcast',JSON.stringify({
+            listado:listadoPodcast,
+            timestamp:(new Date().getTime()).toString()
+            })
+          );
+          props.setListadoPodcast(listadoPodcast)
+          setPodcastCargados(true)
+      },function(err){
+          console.log('Error getListadoPodcast -> ',err);
+      })
+    }else{
+      let listadoPodcast = []
+         
+      listadoLocal.listado.map(function(item,index){
+        let podcast=new Podcast(item)
+        listadoPodcast.push(podcast)
+      })
 
-  let estiloE = 'fadeIn';
-  let estiloS = '';
-  let duracionE = 1000;
-  let duracionS = 0;
-  let delayI = 100;
-  let delayT = 0;
-  let [finishFirst, setFirst] = useState(false);
+      props.setListadoPodcast(listadoPodcast)
+      setPodcastCargados(true)
+    }
    
+  }
+  useEffect(() => {
+    cargarPodcast()
+  }, []);
+  useEffect(() => {
+   if(podcastCargados){
+     cargarSiguienteScreen()
+   }
+  }, [podcastCargados]);
   function cargarSiguienteScreen(){
+    props.setNavigationRedux(props.navigation)
         props.navigation.reset({
           index:0,
           routes:[{name:'vistaPrincipal'}]
@@ -27,15 +82,10 @@ const SplashScreen = (props) => {
     <View style={{flex:1}}> 
       <View style={[styles.image,{alignItems:'center',justifyContent: 'center'}]}> 
           <Animatable.View
-          animation={finishFirst ? estiloS : estiloE}
-          duration={finishFirst ? duracionS : duracionE}
-          delay={delayI}
-          style={[finishFirst ? styles.imagenAnimada : {},{width:200,height:200}]}
-          onAnimationEnd={() => {  
-            setTimeout(() => { 
-              cargarSiguienteScreen();
-            }, 500);
-          }}
+          animation={'fadeIn'}
+          duration={1000}
+          delay={100}
+          style={{opacity:0}}
           >
           <FontAwesome5 name="podcast" size={150} color="black" />
         </Animatable.View>
@@ -45,4 +95,13 @@ const SplashScreen = (props) => {
     </View>
   );
 };
-export default SplashScreen;
+const mapDispatchToProps = {
+  setListadoPodcast,
+  setNavigationRedux
+}
+const mapStateToProps = (state) => {
+  return {
+    listadoPodcast: state.podcast.listadoPodcast,
+  };
+};
+export default connect(mapStateToProps,mapDispatchToProps )(SplashScreen);
