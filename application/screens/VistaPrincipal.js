@@ -6,6 +6,7 @@ import { setLoading } from "../reducers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Podcast from "../objetos/Podcast";
 
+
 const VistaPrincipal = (props) => {
   const [podcastBuscador, setPodcastBuscador] = useState(
     props.listadoPodcast.slice(),
