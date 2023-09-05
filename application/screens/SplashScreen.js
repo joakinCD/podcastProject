@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { setListadoPodcast, setNavigationRedux } from "../reducers";
-import llamadasPodcast from "../funcionalidades/llamadasPodcast";
+import llamadasPodcast from "../funcionalidades/LlamadasPodcast";
 import Podcast from "../objetos/Podcast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

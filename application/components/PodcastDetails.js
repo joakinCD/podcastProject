@@ -27,7 +27,6 @@ const PodcastDetails = (props) => {
                     style={{
                         width: "100%",
                         height: 170,
-                        resizeMode: "cover",
                         borderRadius: 8,
                     }}
                     source={{ uri: podcast.imagen }}

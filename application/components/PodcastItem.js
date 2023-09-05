@@ -33,7 +33,6 @@ const PodcastItem = (props) => {
                             borderRadius: 170,
                         }}
                         source={{ uri: podcast.imagen }}
-                        resizeMode="cover"
                     />
                 </View>
                 <View
