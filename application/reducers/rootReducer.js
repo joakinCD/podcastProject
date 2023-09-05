@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 
-import podcastReducer from "./podcast/podcastReducer";
-import configReducer from "./config/configReducer";
+import podcastReducer from "./podcast/PodcastReducer";
+import configReducer from "./config/ConfigReducer";
 
 const rootReducer = combineReducers({
   podcast: podcastReducer,
-  config: configReducer
+  config: configReducer,
 });
 
 export default rootReducer;
