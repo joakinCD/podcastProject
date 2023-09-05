@@ -5,12 +5,16 @@ import parse from 'html-react-parser';
 const VistaDetallesEpisodio = (props) => {
   let podcast=props.route.params.podcast
   let episodio=props.route.params.episodio
+  function goBack(){
+    props.navigation.goBack()
+  }
   return (
     <View style={{flex:1,padding:20,background:'white'}}>
       <View style={{flex:1,flexDirection:'row'}}>
           <View style={{width:'30%'}}>
             <PodcastDetails
              podcast={podcast}
+             onPress={goBack}
             >
             </PodcastDetails>
           </View>
