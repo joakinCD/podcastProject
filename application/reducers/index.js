@@ -1,2 +1,2 @@
-export {setListadoPodcast} from "./podcast/podcastActions"
-export {setNavigationRedux,setLoading} from "./config/configActions"
+export { setListadoPodcast } from "./podcast/PodcastActions";
+export { setNavigationRedux, setLoading } from "./config/ConfigActions";
