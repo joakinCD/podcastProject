@@ -1,12 +1,12 @@
-import { SET_NAVIGATION_REDUX,SET_LOADING } from "./configTypes";
+import { SET_NAVIGATION_REDUX, SET_LOADING } from "./ConfigTypes";
 
 export const setNavigationRedux = (navigationRedux) => {
   return (dispatch) => {
     dispatch({
       type: SET_NAVIGATION_REDUX,
       payload: {
-        navigationRedux: navigationRedux
-      }
+        navigationRedux: navigationRedux,
+      },
     });
   };
 };
@@ -15,8 +15,8 @@ export const setLoading = (loading) => {
     dispatch({
       type: SET_LOADING,
       payload: {
-        loading: loading
-      }
+        loading: loading,
+      },
     });
   };
 };

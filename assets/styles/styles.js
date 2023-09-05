@@ -1,13 +1,12 @@
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   imagenAnimada: {
-    opacity: 0
+    opacity: 0,
   },
-  image:{
+  image: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: 'center',
-    alignItems: 'center', 
-  }
-}); 
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
