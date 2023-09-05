@@ -11,7 +11,7 @@ const VistaDetallesPodcast = (props) => {
     });
   }
   return (
-    <View style={{ flex: 1, padding: 20, background: "white" }}>
+    <View style={{ flex: 1, padding: 15, background: "white" }}>
       <View style={{ flex: 1, flexDirection: "row" }}>
         <View style={{ width: "30%" }}>
           <PodcastDetails podcast={podcast}></PodcastDetails>

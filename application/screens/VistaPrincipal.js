@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, FlatList, TextInput, Text } from "react-native";
+import { View, FlatList, TextInput, Text, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import PodcastItem from "../components/PodcastItem";
 import { setLoading } from "../reducers";
@@ -69,7 +69,14 @@ const VistaPrincipal = (props) => {
     }
   }
   return (
-    <View style={{ flex: 1, padding: 20, background: "white" }}>
+    <View
+      style={{
+        width: "100%",
+        padding: 20,
+        background: "white",
+        height: Dimensions.get("window").height - 60,
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -99,7 +106,6 @@ const VistaPrincipal = (props) => {
       </View>
 
       <FlatList
-        style={{ flex: 1 }}
         data={podcastBuscador}
         keyExtractor={(item, index) => String(index)}
         numColumns={4}
