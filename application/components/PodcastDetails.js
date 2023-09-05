@@ -1,11 +1,11 @@
 import React,{Component,useReducer} from 'react';
 
 
-import {Dimensions,Image,Text,View} from "react-native";
+import {Dimensions,Image,Text,View,Pressable} from "react-native";
 const PodcastDetails = (props) => {
-    const {podcast} = props
+    const {podcast,onPress} = props
     return(
-        <View style={{alignItems:'center',justifyContent:'center',margin:10,padding:10,shadowColor: "#000",shadowOffset: {width: 0,height: 2},shadowOpacity: 0.25,shadowRadius: 3.84,elevation: 5}}>
+        <Pressable onPress={onPress} style={{alignItems:'center',justifyContent:'center',margin:10,padding:10,shadowColor: "#000",shadowOffset: {width: 0,height: 2},shadowOpacity: 0.25,shadowRadius: 3.84,elevation: 5}}>
             <View style={{width:170,alignItems:'center',justifyContent:'center'}}>
                 <Image
                     style={{width: '100%',height: 170,resizeMode:'cover',borderRadius:8}}
@@ -32,7 +32,7 @@ const PodcastDetails = (props) => {
                     style={{fontSize: 16}}>{podcast.descripcion}
                 </Text>
             </View>
-</View>
+        </Pressable>
 
     );
     
